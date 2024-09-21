@@ -1,0 +1,3 @@
+Here is the fine-tuned model on Huggingface:
+
+https://huggingface.co/srikar-v05/ner-bert
