@@ -1,102 +1,62 @@
-# OCR Entity Extraction with BERT
+# OCR Entity Extraction with BERT by Srikar Veluvali
 
-This project combines Optical Character Recognition (OCR) using PaddleOCR with entity extraction via a fine-tuned BERT model. The goal is to extract text from images and classify entities based on that extracted text.
+This project implements an Optical Character Recognition (OCR) system combined with a fine-tuned BERT model for entity extraction. The objective is to extract text from images and classify entities within that text, allowing for efficient data extraction from visual sources.
 
-## Table of Contents
+## Overview
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Data Preparation](#data-preparation)
-- [Training](#training)
-- [Prediction](#prediction)
-- [Contributing](#contributing)
-- [License](#license)
+The project leverages PaddleOCR for text extraction from images and uses BERT (Bidirectional Encoder Representations from Transformers) for classifying the extracted text into predefined entities. This two-step process enables high accuracy and efficiency in recognizing and categorizing information.
 
-## Installation
+## High-Level Architecture
 
-To set up this project, clone the repository and install the required libraries.
+The architecture consists of the following components:
 
-```bash
-git clone https://github.com/yourusername/repo-name.git
-cd repo-name
-pip install -r requirements.txt
-```
+1. **Image Input**:
+   - Users provide images containing text, typically URLs pointing to images.
 
-Make sure to have the following installed:
+2. **OCR Processing**:
+   - PaddleOCR is utilized to extract text from images. This component handles different orientations and styles of text, making it robust for varied image inputs.
 
-- Python 3.x
-- PaddleOCR
-- Transformers
-- PyTorch
-- PIL (Pillow)
-- Requests
-- Pandas
-- NumPy
-- Scikit-learn
+3. **Data Processing**:
+   - The extracted text is cleaned and pre-processed to be suitable for training the BERT model. This includes tokenization and alignment with corresponding entity labels.
 
-## Usage
+4. **Entity Classification**:
+   - A fine-tuned BERT model is trained on the processed dataset. BERT's architecture allows it to capture context and relationships in the text, enabling accurate classification of entities based on the extracted text.
 
-### Extract Text from Images
+5. **Output Generation**:
+   - The final output includes the predicted entity values associated with the extracted text, allowing for downstream applications like data analysis or integration into larger systems.
 
-You can extract text from images using the `extract_text_from_image` function, which takes an image URL as input. Here's a brief example:
+## Project Workflow
 
-```python
-from your_module import extract_text_from_image
+1. **Data Collection**:
+   - A dataset is created containing images and their corresponding entities. This involves manual labeling or using existing datasets.
 
-text = extract_text_from_image('https://example.com/image.jpg')
-print(text)
-```
+2. **Text Extraction**:
+   - Using PaddleOCR, text is extracted from each image. Error handling ensures robustness in the face of potential issues like network errors or image quality problems.
 
-### Train the Model
+3. **Model Training**:
+   - The extracted text, along with entity labels, is fed into a BERT model for training. The model learns to associate text patterns with specific entity classes through supervised learning.
 
-After extracting text, we have trained the BERT model for entity extraction.
+4. **Evaluation and Fine-Tuning**:
+   - The model's performance is evaluated using metrics such as accuracy and F1-score. Fine-tuning is performed based on these evaluations to improve results.
 
-```python
-# Load your dataset
-import pandas as pd
-df = pd.read_csv('path/to/your/dataset.csv')
+5. **Deployment**:
+   - The final model is saved and can be deployed to make predictions on new images, providing a pipeline for ongoing entity extraction tasks.
 
-# Training code goes here
-```
+## Challenges and Solutions
 
-### Make Predictions
+- **Image Quality**: Low-resolution images can hinder text extraction. The system was designed to handle various image qualities, with pre-processing techniques employed to enhance readability.
+  
+- **Entity Classification Complexity**: Different entities can have similar textual representations. BERT's contextual understanding helps mitigate this issue, but careful dataset preparation and model tuning were essential for optimal results.
 
-Once the model is trained, we can use it to make predictions on new text:
+## Future Work
 
-```python
-from your_module import predict
+Future iterations of this project could include:
 
-predicted_value = predict(extracted_text, entity_name='item_weight')
-print(f"Predicted Entity Value: {predicted_value}")
-```
+- Expanding the dataset for more diverse entity recognition.
+- Implementing additional features such as real-time processing of images via a web interface.
+- Enhancing the model's capabilities with more complex entity types or multi-lingual support.
 
-## Data Preparation
+## Conclusion
 
-Ensure your dataset is formatted correctly. The dataset should contain these major fields:
+This project demonstrates the powerful combination of OCR technology and advanced NLP models like BERT for effective entity extraction. It lays the groundwork for applications across various domains, such as data entry automation, document analysis, and more.
 
-- `image_link`: URLs of the images to extract text from.
-- `entity_name`: Names of the entities you want to classify.
-- `entity_value`: The actual values of those entities.
-
-Example CSV format:
-
-```csv
-image_link,entity_name,entity_value
-https://example.com/image1.jpg,item_weight,3.8g
-```
-
-## Training
-
-The BERT model is fine-tuned on the extracted text with entity labels. You can adjust the number of epochs and batch size in the training loop as needed.
-
-## Prediction
-
-To predict entity values after training, use the `predict` function. It takes the extracted text and the entity name as inputs and returns the predicted value.
-
-## Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
